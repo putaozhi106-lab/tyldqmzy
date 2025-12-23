@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>田娅岚的美食导航主页</title>
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {
+            font-family: "微软雅黑", "PingFang SC", sans-serif;
+            /* 淡紫色渐变背景 */
+            background: linear-gradient(120deg, #f9f0ff, #f0e6ff);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(156, 136, 255, 0.15);
+            /* 轻微的立体效果 */
+            border: 1px solid rgba(196, 175, 255, 0.2);
+        }
+        /* 个人信息区域 */
+        .info {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #c3a8ff;
+            position: relative;
+        }
+        /* 个人信息标题动画 */
+        .info h1 {
+            color: #6c48b8;
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+            position: relative;
+            display: inline-block;
+            padding: 0 20px;
+        }
+        .info h1::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #a888ff, #c3a8ff);
+            border-radius: 3px;
+            animation: widthPulse 3s infinite alternate;
+        }
+        .info p {
+            color: #5a4099;
+            font-size: 18px;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+        }
+        .info p:hover {
+            color: #8b5cf6;
+            transform: scale(1.05);
+        }
+        /* 同学信息区域 */
+        .classmates {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: linear-gradient(90deg, #f8f0ff, #fcfaff);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(156, 136, 255, 0.1);
+        }
+        .classmate-item {
+            text-align: center;
+            color: #5a4099;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+            background: rgba(255, 255, 255, 0.8);
+            width: 200px;
+        }
+        .classmate-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.15);
+            background: #fff;
+        }
+        .classmate-item p:first-child {
+            font-weight: bold;
+            color: #8b5cf6;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        /* 网站导航区域 - 适配15个网站的网格布局 */
+        .websites {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .website-item {
+            text-align: center;
+            padding: 20px 15px;
+            border: 1px solid #e9dfff;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.85);
+            position: relative;
+            overflow: hidden;
+        }
+        /* 卡片悬浮效果 */
+        .website-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 24px rgba(139, 92, 246, 0.18);
+            border-color: #c3a8ff;
+            background: #fff;
+        }
+        /* 卡片hover时的渐变背景 */
+        .website-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(195, 168, 255, 0.1), transparent);
+            transition: all 0.6s ease;
+        }
+        .website-item:hover::before {
+            left: 100%;
+        }
+        .website-item img {
+            width: 75px;
+            height: 75px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            object-fit: contain;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.1));
+        }
+        .website-item:hover img {
+            transform: rotate(5deg) scale(1.1);
+            filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.2));
+        }
+        .website-item a {
+            text-decoration: none;
+            color: #8b5cf6;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .website-item:hover a {
+            color: #6c48b8;
+            text-shadow: 0 1px 2px rgba(108, 72, 184, 0.1);
+        }
+        /* 创意说明 */
+        .creative-note {
+            margin-top: 10px;
+            padding: 20px;
+            background: linear-gradient(90deg, #f8f0ff, #fcfaff);
+            border-left: 4px solid #8b5cf6;
+            color: #5a4099;
+            border-radius: 8px;
+            line-height: 1.8;
+            box-shadow: 0 4px 12px rgba(156, 136, 255, 0.1);
+        }
+        .creative-note p {
+            margin: 8px 0;
+        }
+        .creative-note p:first-child {
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+
+        /* 动画关键帧 */
+        @keyframes widthPulse {
+            0% {width: 80px;}
+            100% {width: 120px;}
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            .classmates {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .classmate-item {
+                width: 100%;
+            }
+            .websites {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            .info h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 个人信息 -->
+        <div class="info">
+            <h1>田娅岚的美食导航主页</h1>
+            <p>学号：202425180122</p>
+            <p>姓名：田娅岚</p>
+            <p>简介：一枚热爱美食、喜欢探索各地美味的干饭人~</p>
+        </div>
+
+        <!-- 同学信息 -->
+        <div class="classmates">
+            <div class="classmate-item">
+                <p>前一号同学（舍友）</p>
+                <p>学号：202425180121</p>
+                <p>姓名：向妍</p>
+            </div>
+            <div class="classmate-item">
+                <p>后一号同学</p>
+                <p>学号：202425180123</p>
+                <p>姓名：张佳贝</p>
+            </div>
+        </div>
+
+        <!-- 15个常用网站导航（新增美食类网站贴合个人喜好） -->
+        <div class="websites">
+            <!-- 美食相关类 -->
+            <div class="website-item">
+                <a href="https://www.xiachufang.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/ef/52/6d/ef526d7fa56ca5320bc5abc579e5e725.jpg" alt="下厨房图标">
+                    <p>下厨房</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.dianping.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/96/09/8f/96098fbe73289c430ed2de58ed54268e.jpg" alt="大众点评图标">
+                    <p>大众点评</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.meituan.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/db/cb/0f/dbcb0fc2153f6d94b791bd4eedcf1b19.jpg" alt="美团图标">
+                    <p>美团</p>
+                </a>
+            </div>
+
+            <!-- 视频娱乐类 -->
+            <div class="website-item">
+                <a href="https://www.bilibili.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/b4/e3/2f/b4e32f895502f90bcca0b3d76105e367.jpg" alt="B站图标">
+                    <p>哔哩哔哩</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://v.qq.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/12/34/45/123445c79bd93391e761ae6259e76950.jpg" alt="腾讯视频图标">
+                    <p>腾讯视频</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.iqiyi.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/e9/2a/91/e92a91f61fa1013670918df4cafe7ba2.jpg" alt="爱奇艺图标">
+                    <p>爱奇艺</p>
+                </a>
+            </div>
+
+            <!-- 知识资讯类 -->
+            <div class="website-item">
+                <a href="https://www.zhihu.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/17/12/f7/1712f7107732a67d96778e3a5ff0eb69.jpg" alt="知乎图标">
+                    <p>知乎</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://news.baidu.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/e4/12/91/e41291e6a8e1e2686e8ac462ae2cdffd.jpg" alt="百度新闻图标">
+                    <p>百度新闻</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.douban.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/8f/50/34/8f50348c0f6436032e93f0bf1853cdc7.jpg" alt="豆瓣图标">
+                    <p>豆瓣</p>
+                </a>
+            </div>
+
+            <!-- 工具学习类 -->
+            <div class="website-item">
+                <a href="https://github.com/" target="_blank">
+                    <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub图标">
+                    <p>GitHub</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.runoob.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/14/a6/8c/14a68c0694b29cfce4ac27acbfbfd351.jpg" alt="菜鸟教程图标">
+                    <p>菜鸟教程</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.baidu.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/45/20/dd/4520ddfc56208707045c56232e946f7f.jpg" alt="百度图标">
+                    <p>百度</p>
+                </a>
+            </div>
+
+            <!-- 生活服务类 -->
+            <div class="website-item">
+                <a href="https://www.taobao.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/d6/fc/c5/d6fcc561c2ee13a53fdec154e539994f.jpg" alt="淘宝图标">
+                    <p>淘宝</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://www.jd.com/" target="_blank">
+                    <img src="https://i.pinimg.com/1200x/55/cc/52/55cc526f063e8ad6c98533b205e15d74.jpg" alt="京东图标">
+                    <p>京东</p>
+                </a>
+            </div>
+            <div class="website-item">
+                <a href="https://weibo.com/" target="_blank">
+                    <img src="https://i.pinimg.com/736x/6b/33/c9/6b33c9d40bf6c31a30cce4f7d7f934c3.jpg" alt="微博图标">
+                    <p>新浪微博</p>
+                </a>
+            
+            </div>
+        </div>
+         <div class="creative-note">
+            <p>✨ 动画效果说明：</p>
+            <p>1. 标题下划线呼吸动效：宽度缓慢变化，增加视觉焦点；</p>
+            <p>2. 卡片悬浮效果：上移+轻微放大+阴影加深，搭配斜向渐变流光，提升交互感；</p>
+            <p>3. 图标hover旋转缩放：增加灵动性；个人信息文字hover变色缩放，增强互动；</p>
+            <p>4. 舍友信息卡片hover上移，区分普通文本与交互元素。</p>
+            <p>✨ 创意说明：</p>
+            <p>1. 整体采用淡紫色（香芋紫）主题，柔和清新，符合女生审美，搭配半透明磨砂质感提升高级感；</p>
+            <p>2. 贴合个人喜好新增下厨房、大众点评、美团等美食类网站，突出“美食导航”核心；</p>
+            <p>3. 响应式布局适配手机/平板，保证多设备浏览体验；</p>
+            <p>4. 色彩搭配以淡紫为主，深紫点缀，层次分明，视觉舒适不刺眼。</p>
+        </div>
+    </div>
+</body>
+</html>
+
+        </div>
+    </div>
+</body>
+</html>
